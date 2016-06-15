@@ -89,7 +89,7 @@ public class WarehouseConnection {
 	}
 
 	public static void main(String[] args) {
-		//WarehouseConnection wh = new WarehouseConnection();
+		WarehouseConnection wh = new WarehouseConnection();
 		//wh.dropTables();
 	}
 }

@@ -13,7 +13,6 @@ public class ItemDao {
 	private Statement st;
 	private PreparedStatement prepSt;
 	private WarehouseConnection warehouse;
-	private Item item;
 
 	public ItemDao() {
 		warehouse = new WarehouseConnection();
@@ -25,7 +24,7 @@ public class ItemDao {
 		rs = st.executeQuery(sql);
 		List<Item> items = new ArrayList<Item>();
 		while (rs.next()) {
-			item = convertRowToItem(rs);
+			Item item = convertRowToItem(rs);
 			items.add(item);
 		}
 		return items;
@@ -85,6 +84,16 @@ public class ItemDao {
 		prepSt = warehouse.createPreparedStatement(sql);
 		prepSt.setInt(1, id);
 		prepSt.executeUpdate();
+	}
+	
+	public static void main(String[] args) throws SQLException {
+		ItemDao dao = new ItemDao();
+		dao.add(new Item());
+		dao.add(new Item());
+		dao.add(new Item());
+		for (Item item : dao.getAllItems()) {
+			System.out.println(item);
+		}
 	}
 
 }

@@ -10,6 +10,10 @@ public class Item {
 	private int store1quantity;
 	private int store2quantity;
 
+	protected int incrementRow() {
+		return row++;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -78,7 +82,7 @@ public class Item {
 	public String toString() {
 		return String.format(
 				"%s. id: %s name: %s distributor: %s singleP: %s mainStQ: %s st1Q: %s st2Q: %s totalQ: %s totalP: %s",
-				+row++, getId(), getName(), getDistributor(), getSinglePrice(), getMainStoreQuantity(),
+				+incrementRow(), getId(), getName(), getDistributor(), getSinglePrice(), getMainStoreQuantity(),
 				getStore1Quantity(), getStore2Quantity(), getTotalQuantity(), getTotalPrice());
 	}
 
