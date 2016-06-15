@@ -30,10 +30,22 @@ public class ItemDao {
 		return items;
 	}
 
-	public Item getItemOrNull(int id) throws SQLException {
+	public Item getByIdItemOrNull(int id) throws SQLException {
 		String sql = "SELECT * FROM item WHERE id = ?";
 		prepSt = warehouse.createPreparedStatement(sql);
 		prepSt.setInt(1, id);
+		rs = prepSt.executeQuery();
+		Item item = null;
+		if (rs.next()) {
+			item = convertRowToItem(rs);
+		}
+		return item;
+	}
+	
+	public Item getByNameItemOrNull(String name) throws SQLException {
+		String sql = "SELECT * FROM item WHERE name = ?";
+		prepSt = warehouse.createPreparedStatement(sql);
+		prepSt.setString(1, name);
 		rs = prepSt.executeQuery();
 		Item item = null;
 		if (rs.next()) {
@@ -84,16 +96,6 @@ public class ItemDao {
 		prepSt = warehouse.createPreparedStatement(sql);
 		prepSt.setInt(1, id);
 		prepSt.executeUpdate();
-	}
-	
-	public static void main(String[] args) throws SQLException {
-		ItemDao dao = new ItemDao();
-		dao.add(new Item());
-		dao.add(new Item());
-		dao.add(new Item());
-		for (Item item : dao.getAllItems()) {
-			System.out.println(item);
-		}
 	}
 
 }
