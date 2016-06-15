@@ -2,10 +2,9 @@ package com.martin.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.sql.Statement;
-
-import com.mysql.jdbc.PreparedStatement;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class WarehouseConnection {
 	private String dbUrl = "jdbc:mysql://localhost:3306/warehouse?useSSL=false";
@@ -90,7 +89,7 @@ public class WarehouseConnection {
 	}
 
 	public static void main(String[] args) {
-		WarehouseConnection wh = new WarehouseConnection();
+		//WarehouseConnection wh = new WarehouseConnection();
 		//wh.dropTables();
 	}
 }
