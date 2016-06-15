@@ -82,14 +82,4 @@ public class Item {
 				getStore1Quantity(), getStore2Quantity(), getTotalQuantity(), getTotalPrice());
 	}
 
-	public static void main(String[] args) {
-		Item item = new Item();
-		item.setSinglePrice(5);
-		item.setStore1Quantity(10);
-		item.setMainStoreQuantity(10);
-		System.out.println(item);
-		System.out.println(new Item());
-		System.out.println(new Item());
-
-	}
 }
