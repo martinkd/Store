@@ -81,12 +81,12 @@ public class ItemDao {
 		prepSt.setInt(4, item.getMainStoreQuantity());
 	}
 
-	public void updateQuantity(Item currentItem, Item newItem) throws SQLException {
+	public void updateQuantity(Item currentItem) throws SQLException {
 		String sql = "UPDATE item SET main_store_quantity = ?, store1_quantity = ?, store2_quantity = ? WHERE id = ?;";
 		prepSt = warehouse.createPreparedStatement(sql);
-		prepSt.setInt(1, newItem.getMainStoreQuantity());
-		prepSt.setInt(2, newItem.getStore1Quantity());
-		prepSt.setInt(3, newItem.getStore2Quantity());
+		prepSt.setInt(1, currentItem.getMainStoreQuantity());
+		prepSt.setInt(2, currentItem.getStore1Quantity());
+		prepSt.setInt(3, currentItem.getStore2Quantity());
 		prepSt.setInt(4, currentItem.getId());
 		prepSt.executeUpdate();
 	}
