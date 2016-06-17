@@ -1,9 +1,9 @@
 package com.martin.dao;
 
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +19,14 @@ public class SoldItemDao {
 		warehouse = new WarehouseConnection();
 	}
 
+	public boolean contains(SoldItem item) throws SQLException {
+		String sql = "SELECT id FROM sold_item WHERE id = ?";
+		prepSt = warehouse.createPreparedStatement(sql);
+		prepSt.setInt(1, item.getId());
+		rs = prepSt.executeQuery();
+		return rs.next();
+	}
+
 	public List<SoldItem> getAllSells() throws SQLException {
 		String sql = "SELECT * FROM sold_item;";
 		st = warehouse.createStatement();
@@ -29,6 +37,18 @@ public class SoldItemDao {
 			sells.add(item);
 		}
 		return sells;
+	}
+
+	public SoldItem getItemById(int id) throws SQLException {
+		String sql = "SELECT * FROM sold_item WHERE id = ?";
+		prepSt = warehouse.createPreparedStatement(sql);
+		prepSt.setInt(1, id);
+		rs = prepSt.executeQuery();
+		SoldItem item = null;
+		if (rs.next()) {
+			item = convertRowToItem(rs);
+		}
+		return item;
 	}
 
 	private SoldItem convertRowToItem(ResultSet rs) throws SQLException {
@@ -52,12 +72,11 @@ public class SoldItemDao {
 		prepSt.executeUpdate();
 	}
 
-	public void updateQuantity(SoldItem currentItem, SoldItem newItem) throws SQLException {
+	public void updateQuantity(SoldItem item) throws SQLException {
 		String sql = "UPDATE sold_item SET quantity = ? WHERE id = ?;";
 		prepSt = warehouse.createPreparedStatement(sql);
-		prepSt.setInt(1, newItem.getQuantity());
-		prepSt.setInt(2, currentItem.getId());
+		prepSt.setInt(1, item.getQuantity());
+		prepSt.setInt(2, item.getId());
 		prepSt.executeUpdate();
 	}
-
 }

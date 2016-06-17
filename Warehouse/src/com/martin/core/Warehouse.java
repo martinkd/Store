@@ -4,16 +4,13 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.martin.dao.ItemDao;
-import com.martin.dao.SoldItemDao;
 import com.martin.item.Item;
 
 public class Warehouse {
 	private ItemDao iDao;
-	private SoldItemDao soldIdao;
 
 	public Warehouse() {
 		iDao = new ItemDao();
-		//soldIdao = new SoldItemDao();
 	}
 
 	public Item getById(int id) throws SQLException {
@@ -27,7 +24,7 @@ public class Warehouse {
 	public void addInMainStore(Item item) throws SQLException {
 		if (exists(item)) {
 			Item currentItem = iDao.getByNameItemOrNull(item.getName());
-			int quantity = calculateQuantity(item, currentItem);
+			int quantity = increasedMainStoreQuantity(item, currentItem);
 			currentItem.setMainStoreQuantity(quantity);
 			iDao.updateQuantity(currentItem);
 		} else {
@@ -43,7 +40,7 @@ public class Warehouse {
 		return exists;
 	}
 
-	private int calculateQuantity(Item item, Item currentItem) {
+	private int increasedMainStoreQuantity(Item item, Item currentItem) {
 		int quantity = currentItem.getMainStoreQuantity();
 		quantity += item.getMainStoreQuantity();
 		return quantity;
@@ -52,8 +49,8 @@ public class Warehouse {
 	public boolean sendToStore1(int id, int quantity) throws SQLException {
 		Item currentItem = getById(id);
 		if (canSend(currentItem, quantity)) {
-			currentItem.setMainStoreQuantity(newMainStoreQuantity(currentItem, quantity));
-			currentItem.setStore1Quantity(newStore1Quantity(currentItem, quantity));
+			currentItem.setMainStoreQuantity(decreasedMainStoreQuantity(currentItem, quantity));
+			currentItem.setStore1Quantity(increasedStore1Quantity(currentItem, quantity));
 			iDao.updateQuantity(currentItem);
 			return true;
 		}
@@ -61,37 +58,51 @@ public class Warehouse {
 	}
 
 	private boolean canSend(Item currentItem, int quantity) throws SQLException {
-		return currentItem != null && isEnoughQuantity(currentItem, quantity);
+		return currentItem != null && isEnoughQuantityInMainStore(currentItem, quantity);
 	}
 
-	private boolean isEnoughQuantity(Item item, int quantity) {
+	protected boolean isEnoughQuantityInMainStore(Item item, int quantity) {
 		return item.getMainStoreQuantity() > 0 && item.getMainStoreQuantity() >= quantity;
 	}
+	
+	protected boolean isEnoughQuantityInStore1(Item item, int quantity) {
+		return item.getStore1Quantity() > 0 && item.getStore1Quantity() >= quantity;
+	}
+	
+	protected boolean isEnoughQuantityInStore2(Item item, int quantity) {
+		return item.getStore2Quantity() > 0 && item.getStore2Quantity() >= quantity;
+	}
 
-	private int newMainStoreQuantity(Item currentItem, int quantity) {
+	protected int decreasedMainStoreQuantity(Item currentItem, int quantity) {
 		return currentItem.getMainStoreQuantity() - quantity;
 	}
 
-	private int newStore1Quantity(Item currentItem, int quantity) {
+	private int increasedStore1Quantity(Item currentItem, int quantity) {
 		return currentItem.getStore1Quantity() + quantity;
 	}
 
 	public boolean sendToStore2(int id, int quantity) throws SQLException {
 		Item currentItem = getById(id);
 		if (canSend(currentItem, quantity)) {
-			currentItem.setMainStoreQuantity(newMainStoreQuantity(currentItem, quantity));
-			currentItem.setStore2Quantity(newStore2Quantity(currentItem, quantity));
+			currentItem.setMainStoreQuantity(decreasedMainStoreQuantity(currentItem, quantity));
+			currentItem.setStore2Quantity(increasedStore2Quantity(currentItem, quantity));
 			iDao.updateQuantity(currentItem);
 			return true;
 		}
 		return false;
 	}
 
-	private int newStore2Quantity(Item currentItem, int quantity) {
+	private int increasedStore2Quantity(Item currentItem, int quantity) {
 		return currentItem.getStore2Quantity() + quantity;
 	}
-	public static void main(String[] args) {
-		Warehouse wh = new Warehouse();
+
+	public boolean delete(int id) throws SQLException {
+		boolean canDelete = false;
+		if (iDao.getByIdItemOrNull(id) != null) {
+			iDao.deleteItem(id);
+			canDelete = true;
+		}
+		return canDelete;
 	}
 
 }

@@ -88,8 +88,4 @@ public class WarehouseConnection {
 		statement.execute(sql);
 	}
 
-	public static void main(String[] args) {
-		WarehouseConnection wh = new WarehouseConnection();
-		//wh.dropTables();
-	}
 }
