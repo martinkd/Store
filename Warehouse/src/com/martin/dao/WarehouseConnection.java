@@ -2,90 +2,118 @@ package com.martin.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class WarehouseConnection {
-	private String dbUrl = "jdbc:mysql://localhost:3306/warehouse?useSSL=false";
-	private String user = "student";
-	private String pass = "student";
-
+	private static String dbUrl = "jdbc:mysql://localhost:3306/warehouse?useSSL=false";
+	private static String user = "student";
+	private static String pass = "student";
 	private Connection connection;
-	private Statement statement;
+	private static WarehouseConnection warehouse = null;
 
-	public WarehouseConnection() {
+	private WarehouseConnection() {
 		createTables();
 	}
 
-	public WarehouseConnection(String user, String pass) {
-		this.user = user;
-		this.pass = pass;
-		createTables();
+	public static WarehouseConnection getInstance() {
+		if (warehouse == null) {
+			warehouse = new WarehouseConnection();
+		}
+		return warehouse;
 	}
 
 	public Connection getConnection() throws SQLException {
 		return connection = DriverManager.getConnection(dbUrl, user, pass);
 	}
 
-	public Statement createStatement() throws SQLException {
-		getConnection();
-		return statement = connection.createStatement();
-	}
-
-	public PreparedStatement createPreparedStatement(String sql) throws SQLException {
-		getConnection();
-		return (PreparedStatement) connection.prepareStatement(sql);
+	private PreparedStatement getPreparedStatement(String sql) throws SQLException {
+		return getConnection().prepareStatement(sql);
 	}
 
 	private void createTables() {
 		try {
-			createStatement();
-			createItemTable();
-			createSoldItemTable();
-			System.out.println("tables created!");
-
+			createWarehouseTable();
+			createStoreOneTable();
+			createStoreTwoTable();
+			createSellsTable();
 		} catch (SQLException e) {
-			System.err.println("Tables not created!");
 			e.printStackTrace();
+		} finally {
+			closeConnection();
 		}
-
 	}
 
-	private void createItemTable() throws SQLException {
-		String sql = "CREATE TABLE IF NOT EXISTS item (" + "id INT NOT NULL AUTO_INCREMENT," + "name VARCHAR(45),"
-				+ "distributor VARCHAR(45)," + "single_price DOUBLE," + "main_store_quantity INT,"
-				+ "store1_quantity INT," + "store2_quantity INT," + "PRIMARY KEY(id)" + ");";
-		statement.execute(sql);
+	private void createWarehouseTable() throws SQLException {
+		String sql = "CREATE TABLE IF NOT EXISTS warehouse (" + "id INT NOT NULL AUTO_INCREMENT," + "name VARCHAR(45),"
+				+ "distributor VARCHAR(45)," + "single_price DOUBLE," + "quantity INT," + "PRIMARY KEY(id)" + ");";
+		getPreparedStatement(sql).execute();
 	}
 
-	private void createSoldItemTable() throws SQLException {
-		String sql = "CREATE TABLE IF NOT EXISTS sold_item(" + "id INT NOT NULL," + "name VARCHAR(45),"
-				+ "single_price DOUBLE," + "quantity INT," + "client VARCHAR(45)," + "PRIMARY KEY(id)" + ");";
-		statement.execute(sql);
+	private void createStoreOneTable() throws SQLException {
+		String sql = "CREATE TABLE IF NOT EXISTS store_one (" + "id INT," + "quantity INT," + "PRIMARY KEY(id)" + ");";
+		getPreparedStatement(sql).execute();
+	}
+
+	private void createStoreTwoTable() throws SQLException {
+		String sql = "CREATE TABLE IF NOT EXISTS store_two (" + "id INT," + "quantity INT," + "PRIMARY KEY(id));";
+		getPreparedStatement(sql).execute();
+	}
+
+	private void createSellsTable() throws SQLException {
+		String sql = "CREATE TABLE IF NOT EXISTS sells(" + "id INT NOT NULL," + "name VARCHAR(45),"
+				+ "single_price DOUBLE," + "quantity INT," + "client VARCHAR(45)" + ");";
+		getPreparedStatement(sql).execute();
 	}
 
 	@SuppressWarnings("unused")
 	private void dropTables() {
 		try {
-			createStatement();
-			dropItem();
-			dropSoldItem();
+			dropWarehouseTable();
+			dropStoreOneTable();
+			dropStoreTwoTable();
+			dropSellsTable();
 			System.out.println("tables deleted");
 		} catch (SQLException e) {
 			System.out.println("Tables not deleted");
 			e.printStackTrace();
+		} finally {
+			closeConnection();
 		}
 	}
 
-	private void dropItem() throws SQLException {
-		String sql = "DROP TABLE item;";
-		statement.execute(sql);
+	private void dropWarehouseTable() throws SQLException {
+		String sql = "DROP TABLE warehouse;";
+		getPreparedStatement(sql).execute();
 	}
 
-	private void dropSoldItem() throws SQLException {
-		String sql = "DROP TABLE sold_item;";
-		statement.execute(sql);
+	private void dropStoreOneTable() throws SQLException {
+		String sql = "DROP TABLE store_one;";
+		getPreparedStatement(sql).execute();
+	}
+
+	private void dropStoreTwoTable() throws SQLException {
+		String sql = "DROP TABLE store_two;";
+		getPreparedStatement(sql).execute();
+	}
+
+	private void dropSellsTable() throws SQLException {
+		String sql = "DROP TABLE sells;";
+		getPreparedStatement(sql).execute();
+	}
+
+	public void closeConnection() {
+		try {
+			if (connection != null) {
+				connection.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void main(String[] args) {
+		WarehouseConnection.getInstance().dropTables();
 	}
 
 }

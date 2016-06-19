@@ -6,9 +6,7 @@ public class Item {
 	private String name;
 	private String distributor;
 	private double singlePrice;
-	private int mainStoreQunatity;
-	private int store1quantity;
-	private int store2quantity;
+	private int quantity;
 
 	protected int incrementRow() {
 		return row++;
@@ -46,44 +44,23 @@ public class Item {
 		this.singlePrice = singlePrice;
 	}
 
-	public int getMainStoreQuantity() {
-		return mainStoreQunatity;
+	public int getQuantity() {
+		return quantity;
 	}
 
-	public void setMainStoreQuantity(int quantity) {
-		this.mainStoreQunatity = quantity;
-	}
-
-	public int getStore1Quantity() {
-		return store1quantity;
-	}
-
-	public void setStore1Quantity(int quantity) {
-		this.store1quantity = quantity;
-	}
-
-	public int getStore2Quantity() {
-		return store2quantity;
-	}
-
-	public void setStore2Quantity(int quantity) {
-		this.store2quantity = quantity;
-	}
-
-	public int getTotalQuantity() {
-		return mainStoreQunatity + store1quantity + store2quantity;
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 
 	public double getTotalPrice() {
-		return getSinglePrice() * getTotalQuantity();
+		return getSinglePrice() * getQuantity();
 	}
 
 	@Override
 	public String toString() {
-		return String.format(
-				"%s. id: %s name: %s distributor: %s singleP: %s mainStQ: %s st1Q: %s st2Q: %s totalQ: %s totalP: %s",
-				+incrementRow(), getId(), getName(), getDistributor(), getSinglePrice(), getMainStoreQuantity(),
-				getStore1Quantity(), getStore2Quantity(), getTotalQuantity(), getTotalPrice());
+		return String.format("%s. id: %s name: %s distributor: %s singleP: %s quantity: %s totalQ: %s totalP: %s",
+				+incrementRow(), getId(), getName(), getDistributor(), getSinglePrice(), getQuantity(),
+				getTotalPrice());
 	}
 
 }

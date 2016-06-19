@@ -1,16 +1,7 @@
 package com.martin.item;
 
 public class SoldItem extends Item {
-	private int quantity;
 	private String client;
-
-	public int getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
 
 	public String getClient() {
 		return client;
