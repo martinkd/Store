@@ -1,4 +1,4 @@
-package com.martin.dao.warehouse;
+package com.martin.warehouse.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

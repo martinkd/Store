@@ -1,4 +1,4 @@
-package com.martin.dao.warehouse;
+package com.martin.warehouse.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.martin.item.warehouse.Item;
+import com.martin.warehouse.item.Item;
 
 public class WarehouseDao {
 	private ResultSet rs;

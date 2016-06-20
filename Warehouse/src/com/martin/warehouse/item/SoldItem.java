@@ -1,4 +1,4 @@
-package com.martin.item.warehouse;
+package com.martin.warehouse.item;
 
 public class SoldItem extends Item {
 	private String client;

@@ -1,12 +1,12 @@
-package com.martin.core.warehouse;
+package com.martin.warehouse.core;
 
 import java.sql.SQLException;
 import java.util.List;
 
-import com.martin.dao.warehouse.SellsDao;
-import com.martin.dao.warehouse.WarehouseDao;
-import com.martin.item.warehouse.Item;
-import com.martin.item.warehouse.SoldItem;
+import com.martin.warehouse.dao.SellsDao;
+import com.martin.warehouse.dao.WarehouseDao;
+import com.martin.warehouse.item.Item;
+import com.martin.warehouse.item.SoldItem;
 
 public class Warehouse {
 	private WarehouseDao wDao;

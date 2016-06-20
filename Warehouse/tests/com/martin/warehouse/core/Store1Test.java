@@ -1,4 +1,4 @@
-package com.martin.core.warehouse;
+package com.martin.warehouse.core;
 
 import static org.junit.Assert.*;
 
@@ -7,9 +7,10 @@ import java.sql.SQLException;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.martin.dao.warehouse.WarehouseConnection;
-import com.martin.item.warehouse.Item;
-import com.martin.item.warehouse.SoldItem;
+import com.martin.warehouse.core.Store1;
+import com.martin.warehouse.dao.WarehouseConnection;
+import com.martin.warehouse.item.Item;
+import com.martin.warehouse.item.SoldItem;
 
 public class Store1Test {
 

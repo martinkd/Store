@@ -1,55 +1,54 @@
-package com.martin.core.warehouse;
+package com.martin.warehouse.core;
 
 import java.sql.SQLException;
 
-import com.martin.dao.warehouse.SellsDao;
-import com.martin.dao.warehouse.StoreOneDao;
-import com.martin.item.warehouse.Item;
-import com.martin.item.warehouse.SoldItem;
+import com.martin.warehouse.dao.SellsDao;
+import com.martin.warehouse.dao.StoreTwoDao;
+import com.martin.warehouse.item.Item;
+import com.martin.warehouse.item.SoldItem;
 
-public class Store1 implements Storable {
+public class Store2 implements Storable {
 
-	private StoreOneDao s1Dao;
+	private StoreTwoDao s2Dao;
 
-	public Store1() {
-		s1Dao = new StoreOneDao();
+	public Store2() {
+		s2Dao = new StoreTwoDao();
 	}
 
 	public int getQuantity(int id) throws SQLException {
-		return s1Dao.getQuantity(id);
+		return s2Dao.getQuantity(id);
 	}
 	
 	public void add(Item item) throws SQLException {
 		if (exists(item)) {
 			int newQuantity = increaseQuantity(item);
-			s1Dao.updateQuantity(item.getId(), newQuantity);
+			s2Dao.updateQuantity(item.getId(), newQuantity);
 		} else {
-			s1Dao.add(item);
+			s2Dao.add(item);
 		}
 	}
 
 	public boolean exists(Item item) throws SQLException {
-		return s1Dao.exists(item.getId());
+		return s2Dao.exists(item.getId());
 	}
 
 	public int increaseQuantity(Item item) throws SQLException {
-		int oldQuantity = s1Dao.getQuantity(item.getId());
+		int oldQuantity = s2Dao.getQuantity(item.getId());
 		return oldQuantity + item.getQuantity();
 	}
 
 	public boolean sell(SoldItem soldItem) throws SQLException {
-		boolean canSell = s1Dao.exists(soldItem.getId()) && decreaseQuantity(soldItem) >= 0;
+		boolean canSell = s2Dao.exists(soldItem.getId()) && decreaseQuantity(soldItem) >= 0;
 		if (canSell) {
 			int newQuantity = decreaseQuantity(soldItem);
-			s1Dao.updateQuantity(soldItem.getId(), newQuantity);
+			s2Dao.updateQuantity(soldItem.getId(), newQuantity);
 			SellsDao.getInstance().add(soldItem);
 		}
 		return canSell;
 	}
 
 	public int decreaseQuantity(SoldItem soldItem) throws SQLException {
-		int oldQuantity = s1Dao.getQuantity(soldItem.getId());
+		int oldQuantity = s2Dao.getQuantity(soldItem.getId());
 		return oldQuantity - soldItem.getQuantity();
 	}
-
 }
