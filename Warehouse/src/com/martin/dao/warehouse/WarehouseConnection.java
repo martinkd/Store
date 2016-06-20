@@ -28,7 +28,7 @@ public class WarehouseConnection {
 		return connection;
 	}
 
-	public void setConnection() {
+	private void setConnection() {
 		try {
 			connection = DriverManager.getConnection(dbUrl, user, pass);			
 		} catch (SQLException e) {
