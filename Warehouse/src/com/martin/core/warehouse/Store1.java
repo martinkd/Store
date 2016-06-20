@@ -15,6 +15,10 @@ public class Store1 implements Storable {
 		s1Dao = new StoreOneDao();
 	}
 
+	public int getQuantity(int id) throws SQLException {
+		return s1Dao.getQuantity(id);
+	}
+	
 	public void add(Item item) throws SQLException {
 		if (exists(item)) {
 			int newQuantity = increaseQuantity(item);

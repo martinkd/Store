@@ -8,8 +8,10 @@ import com.martin.item.warehouse.SoldItem;
 public interface Storable {
 
 	public void add(Item item) throws SQLException;
-
+	
 	boolean exists(Item item) throws SQLException;
+	
+	int getQuantity(int id) throws SQLException;
 
 	int increaseQuantity(Item item) throws SQLException;
 
