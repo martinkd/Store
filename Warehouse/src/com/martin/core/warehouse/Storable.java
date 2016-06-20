@@ -1,9 +1,9 @@
-package com.martin.core;
+package com.martin.core.warehouse;
 
 import java.sql.SQLException;
 
-import com.martin.item.Item;
-import com.martin.item.SoldItem;
+import com.martin.item.warehouse.Item;
+import com.martin.item.warehouse.SoldItem;
 
 public interface Storable {
 

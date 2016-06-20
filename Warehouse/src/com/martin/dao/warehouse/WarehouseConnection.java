@@ -1,4 +1,4 @@
-package com.martin.dao;
+package com.martin.dao.warehouse;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,13 +13,13 @@ public class WarehouseConnection {
 	private static WarehouseConnection warehouse = null;
 
 	private WarehouseConnection() {
-		createTables();
 	}
 
 	public static WarehouseConnection getInstance() {
 		if (warehouse == null) {
 			warehouse = new WarehouseConnection();
 		}
+		warehouse.createTables();
 		return warehouse;
 	}
 
@@ -66,14 +66,12 @@ public class WarehouseConnection {
 		getPreparedStatement(sql).execute();
 	}
 
-	@SuppressWarnings("unused")
-	private void dropTables() {
+	public void dropTables() {
 		try {
 			dropWarehouseTable();
 			dropStoreOneTable();
 			dropStoreTwoTable();
 			dropSellsTable();
-			System.out.println("tables deleted");
 		} catch (SQLException e) {
 			System.out.println("Tables not deleted");
 			e.printStackTrace();
@@ -110,10 +108,6 @@ public class WarehouseConnection {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public static void main(String[] args) {
-		WarehouseConnection.getInstance().dropTables();
 	}
 
 }

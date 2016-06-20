@@ -1,4 +1,4 @@
-package com.martin.item;
+package com.martin.item.warehouse;
 
 public class Item {
 	private static int row = 1;

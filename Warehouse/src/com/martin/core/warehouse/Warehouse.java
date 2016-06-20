@@ -1,12 +1,12 @@
-package com.martin.core;
+package com.martin.core.warehouse;
 
 import java.sql.SQLException;
 import java.util.List;
 
-import com.martin.dao.SellsDao;
-import com.martin.dao.WarehouseDao;
-import com.martin.item.Item;
-import com.martin.item.SoldItem;
+import com.martin.dao.warehouse.SellsDao;
+import com.martin.dao.warehouse.WarehouseDao;
+import com.martin.item.warehouse.Item;
+import com.martin.item.warehouse.SoldItem;
 
 public class Warehouse {
 	private WarehouseDao wDao;
@@ -66,6 +66,7 @@ public class Warehouse {
 		boolean canSell = item != null && decreaseQuantity(item, soldItem.getQuantity()) >= 0;
 		if (canSell) {
 			item.setQuantity(decreaseQuantity(item, soldItem.getQuantity()));
+			wDao.updateQuantity(item);
 			SellsDao.getInstance().add(soldItem);
 		}
 		return canSell;

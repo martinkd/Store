@@ -1,4 +1,4 @@
-package com.martin.dao;
+package com.martin.dao.warehouse;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.martin.item.SoldItem;
+import com.martin.item.warehouse.SoldItem;
 
 public class SellsDao {
 	private PreparedStatement prepSt;

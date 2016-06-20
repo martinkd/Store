@@ -1,11 +1,11 @@
-package com.martin.core;
+package com.martin.core.warehouse;
 
 import java.sql.SQLException;
 
-import com.martin.dao.SellsDao;
-import com.martin.dao.StoreOneDao;
-import com.martin.item.Item;
-import com.martin.item.SoldItem;
+import com.martin.dao.warehouse.SellsDao;
+import com.martin.dao.warehouse.StoreOneDao;
+import com.martin.item.warehouse.Item;
+import com.martin.item.warehouse.SoldItem;
 
 public class Store1 implements Storable {
 
