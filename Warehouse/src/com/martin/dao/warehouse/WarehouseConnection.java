@@ -19,14 +19,23 @@ public class WarehouseConnection {
 		if (warehouse == null) {
 			warehouse = new WarehouseConnection();
 		}
+		warehouse.setConnection();
 		warehouse.createTables();
 		return warehouse;
 	}
 
-	public Connection getConnection() throws SQLException {
-		return connection = DriverManager.getConnection(dbUrl, user, pass);
+	public Connection getConnection() {
+		return connection;
 	}
 
+	public void setConnection() {
+		try {
+			connection = DriverManager.getConnection(dbUrl, user, pass);			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private PreparedStatement getPreparedStatement(String sql) throws SQLException {
 		return getConnection().prepareStatement(sql);
 	}
@@ -39,8 +48,6 @@ public class WarehouseConnection {
 			createSellsTable();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			closeConnection();
 		}
 	}
 
@@ -75,9 +82,7 @@ public class WarehouseConnection {
 		} catch (SQLException e) {
 			System.out.println("Tables not deleted");
 			e.printStackTrace();
-		} finally {
-			closeConnection();
-		}
+		} 
 	}
 
 	private void dropWarehouseTable() throws SQLException {
